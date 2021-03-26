@@ -1,0 +1,29 @@
+{
+  "name": "memeframebot",
+  "version": "1.0.0",
+  "description": "it steals your memes from your discord and displays them in you'r pictureframe",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fred441a/MemeBot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "meme",
+    "stealing"
+  ],
+  "author": "Frederik Hansen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fred441a/MemeBot/issues"
+  },
+  "homepage": "https://github.com/fred441a/MemeBot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0"
+  }
+}
