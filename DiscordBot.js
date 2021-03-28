@@ -21,10 +21,11 @@ function SetupBotfunc() {
 
 
     client.on('message', message => {
-        if (message.attachments.size != 0){
-            console.log(message.attachments.forEach(attachment => {
+        if (message.attachments.size != 0 && message.channel.name == process.env.Channel){
+            message.attachments.forEach(attachment => {
                 Electron.ChangeUrl(attachment.url);
-            }))
+            })
+            console.log(message.channel.name);
         }
     })
 
