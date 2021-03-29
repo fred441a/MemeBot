@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MemeFrame-Setup</title>
+    <style></style>
+</head>
+
+<body>
+    <div id="WifiList">
+        <img src="https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif">
+    </div>
+    </br>
+    <p> Wifi Password:</p>
+    <input id="WifiPassword" type="password">
+    </br>
+    <p>Bot Token:</p>
+    <input id="BotToken" type="password">
+    </br>
+    <p>Channel Name:</p>
+    <input id="ChannelName" type="text">
+    </br>
+    <button onclick="submit()">Submit</button>
+    <script>
+        var WifiJson;
+        var selectedSsid;
+
+
+        function getWifi() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    WifiJson = JSON.parse(this.responseText);
+                    MakeWifiSelectorList();
+                }
+            };
+            xhttp.open("GET", "/WifiScan", true);
+            xhttp.send();
+        }
+
+        function MakeWifiSelectorList() {
+            var wifihtmllist;
+            WifiJson.forEach(element => {
+                if (element) {
+                    wifihtmllist += "</br> <button name='wifi' id=\"" + element.ssid + "\" onclick=\"wifibuttons('" + element.ssid + "')\" >" + element.ssid + "</button>"
+                }
+            });
+            document.getElementById("WifiList").innerHTML = wifihtmllist;
+        }
+
+        getWifi();
+
+        function submit() {
+            var JSONreq = {
+                SSID: selectedSsid,
+                WifiPassword: document.getElementById("WifiPassword").value,
+                BotToken: document.getElementById("BotToken").value,
+                Channel: document.getElementById("ChannelName").value
+            }
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                }
+            };
+            xhttp.open("POST", "/Setup", true);
+            xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify(JSONreq));
+        }
+
+        function wifibuttons(SSID) {
+            selectedSsid = SSID;
+            document.getElementsByName("wifi").forEach(element => {
+                element.disabled = false;
+            });
+            document.getElementById(SSID).disabled = true;
+        }
+
+    </script>
+
+</body>
+
+</html>
