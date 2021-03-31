@@ -4,7 +4,7 @@
   "description": "it steals your memes from your discord and displays them in you'r pictureframe",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron . --no-sandbox"
   },
   "repository": {
     "type": "git",

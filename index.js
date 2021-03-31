@@ -1,50 +1,68 @@
 const express = require('express')
-var wifi = require('node-wifi');
+var iwlist = require("./iwlist");
+var wpa = require("./wpaconnect");
+var host = require("./Hostapd")
+var dhcp = require("./dhcp")
 const bp = require('body-parser')
+var exec = require("child_process").exec;
 fs = require('fs');
 const app = express()
 const port = 3000
 
 var discord = require("./DiscordBot");
+const { stdout } = require('process');
+
+function sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}
+
+async function nap() {
+    await sleep(60000)
+
+    exec("ping -c 1 google.com", function (error, stdout, stderr) {
+        if (error) {
+            host.StartHotspot();
+            dhcp.StartHotspot();
+        } else {
+            discord.SetupBot();
+        }
+    });
+}
+nap();
+
 
 
 app.use(bp.json())
 app.use(bp.urlencoded({ extended: true }))
 
 
-wifi.init({
-    iface: null // network interface, choose a random wifi interface if set to null
-});
-
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/config/index.html')
 })
 
 app.get('/WifiScan', (req, res) => {
-    wifi.scan((error, network) => {
+    iwlist(function (error, result) {
         if (error) {
             console.error(error);
         } else {
-            res.send(network);
+            console.log(result[0].scan_results);
+            res.send(result[0].scan_results);
         }
+
     });
 })
 
 app.post('/Setup', (req, res) => {
-    let ENV = "DiscordBotKey = "+req.body.BotToken+" \nChannel = "+req.body.Channel;
-    fs.writeFile(__dirname+"/.env",ENV, function(err){
-        if(err){
+    let ENV = "DiscordBotKey = " + req.body.BotToken + " \nChannel = " + req.body.Channel;
+    fs.writeFile(__dirname + "/.env", ENV, function (err) {
+        if (err) {
             console.error(err);
         }
     });
     console.log(req.body);
-    wifi.connect({ ssid: req.body.SSID, password: req.body.WifiPassword }, error => {
-        if (error) {
-            console.log(error);
-        }
-        console.log('Connected');
-    });
-    discord.SetupBot();
+    wpa.Connect(req.body.SSID, req.body.WifiPassword, discord.SetupBot)
 })
 
 app.listen(port, () => {
