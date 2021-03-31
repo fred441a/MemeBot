@@ -21,9 +21,10 @@ function sleep(ms) {
 async function nap() {
     await sleep(60000)
 
-    exec("ping -c 1 google.com", function (error, stdout, stderr) {
+    exec("ping -c 1 google.com", async function (error, stdout, stderr) {
         if (error) {
             host.StartHotspot();
+            await sleep(2000)
             dhcp.StartHotspot();
         } else {
             discord.SetupBot();
@@ -62,7 +63,7 @@ app.post('/Setup', (req, res) => {
         }
     });
     console.log(req.body);
-    wpa.Connect(req.body.SSID, req.body.WifiPassword, discord.SetupBot)
+    wpa.Connect(req.body.SSID, req.body.WifiPassword)
 })
 
 app.listen(port, () => {

@@ -36,6 +36,8 @@ function createWindow() {
         width: 800,
         height: 600,
         frame: false,
+        fullscreen:true,
+        backgroundColor:"#ffffff",
     })
 
     win.loadURL('https://fred441a.github.io/404')
