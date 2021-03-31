@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-var hostapd = require('wireless-tools/hostapd');
-var wpa_cli = require('wireless-tools/wpa_cli');
-var udhcpd = require('wireless-tools/udhcpd');
-var wpa_supplicant = require('wireless-tools/wpa_supplicant');
 
 const express = require('express')
 const bp = require('body-parser')
@@ -10,17 +5,8 @@ fs = require('fs');
 const app = express()
 const port = 3000
 
-
-
-=======
->>>>>>> parent of fcde4ae... Added web configurer
 var discord = require("./DiscordBot");
 
-/*
-Electron.startWindow();
-setTimeout(test, 10000);
-
-<<<<<<< HEAD
 app.use(bp.json())
 app.use(bp.urlencoded({ extended: true }))
 
@@ -109,11 +95,6 @@ function StopHotspot(){
       udhcpd.disable('wlan0', function(err) {
         // the dhcp server was stopped
       });
-}
-=======
-function test() {
-  Electron.ChangeUrl("https://www.youtube.com/")
-}
-*/
 discord.SetupBot();
->>>>>>> parent of fcde4ae... Added web configurer
+}
+
