@@ -4,7 +4,9 @@
   "description": "it steals your memes from your discord and displays them in you'r pictureframe",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": {
     "type": "git",
@@ -26,10 +28,43 @@
     "body-parser": "^1.19.0",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
+    "electron-squirrel-startup": "^1.0.0",
     "express": "^4.17.1",
-    "node-wifi": "^2.0.14"
+    "wireless-tools": "^0.19.0"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "electron": "^12.0.2"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "memeframebot"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }
